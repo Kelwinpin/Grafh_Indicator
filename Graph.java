@@ -26,16 +26,19 @@ public class Graph {
     public void initializeGraph(){
         int totalEdge = this.edge;
         for (int i = 0; i < graph.length; i++) {
-            System.out.print("V"+i+" ");
+            System.out.print("V"+(i+1)+" ");
             for (int j = 0; j < graph.length; j++) {
-                if (i == j || totalEdge == 0) {
-                    this.graph[i][j] = 0;
-                    System.out.print(graph[i][j]+" ");
-                } else {
-                    this.graph[i][j] = random.nextInt(1, 5);
-                    System.out.print(graph[i][j]+" ");
-                    totalEdge--;
+                if (j < this.vertex - i || i == 0) {
+                    if (j == 0 || totalEdge == 0) {
+                        this.graph[i][j] = 0;
+                        System.out.print(graph[i][j]+" ");
+                    } else {
+                        this.graph[i][j] = random.nextInt(1, 5);
+                        System.out.print(graph[i][j]+" ");
+                        totalEdge--;
+                    }
                 }
+                
             }                
             System.out.print("\n");
         }
