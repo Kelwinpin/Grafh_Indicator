@@ -4,14 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Entre com o número de arestas:");
-        int edge = scan.nextInt();
-
-        System.out.println("Entre com o número de vertices:");
-        int vertex = scan.nextInt();
-
-        Graph grafo = new Graph(vertex, edge);
-        grafo.getEdge();
+        Graph grafo = new Graph(4, 6);
 
         int option = 0; 
         while (option != 0) {
