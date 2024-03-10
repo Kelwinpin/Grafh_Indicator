@@ -6,16 +6,23 @@ public class Main {
 
         Graph grafo = new Graph(5, 10);
 
-        int option = 0; 
+        int option = 99; 
         while (option != 0) {
-            System.out.println("Digite uma opção: ");
-            option = scan.nextInt(); 
-            switch (option) {
-                case 1:
-                    System.out.println("Selecionou 1");
-                    break;
 
-                case 2:
+            System.out.println("1 --> Exibir grafo\n0 --> Sair");
+            option = scan.nextInt(); 
+
+            switch (option) {
+                case 0:
+                    System.out.println("\nObrigado por usar o sistema!\n");
+                    break;
+                case 1:
+                    System.out.print("\n");
+                    grafo.printGraph();
+                    System.out.print("\n");
+                    break;
+                default:
+                    System.out.println("\nOpção não existente!\n");
                     break;
             }
         }
