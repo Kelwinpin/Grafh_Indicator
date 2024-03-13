@@ -57,4 +57,29 @@ public class Graph {
         }
     }
 
+    public void hasLeaningVertex(){
+        int leaningVertex = 0;
+        int leaningAutoLoopVertex = 0;
+
+        for (int i = 0; i < graph.length; i++) {
+            for (int j = 0; j < graph.length; j++) {
+                if (i == j && this.graph[i][j] == 1) {
+                  System.out.print("["+i+","+j+"] ");
+                  leaningAutoLoopVertex++;  
+                } else if (this.graph[i][j] == 1) {
+                    System.out.print("["+i+","+j+"] ");
+                    leaningVertex++;
+                }
+            }
+        }
+
+        int sumLeaningVertex = leaningAutoLoopVertex + (leaningVertex / 2);
+
+        if (sumLeaningVertex > 0) {
+            System.out.println("\nO grafo possui "+sumLeaningVertex+" vértices pendentes!");
+        } else {
+            System.out.println("\nO grafo não possui vértices pendentes!");
+        }
+    }
+
 };
