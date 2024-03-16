@@ -6,8 +6,6 @@ public class Graph {
     private int[][] graph;
     private Random random = new Random();
 
-
-
     public Graph(int vertex, int edge) {
         this.vertex = vertex;
         this.edge = edge;
@@ -108,6 +106,41 @@ public class Graph {
             System.out.println("\nO grafo possui "+isolateVertex+" vértices isolados!");
         } else {
             System.out.println("\nO grafo não possui vértices isolados!");
+        }
+    }
+
+    public boolean isSimple(){
+         for (int i = 0; i < this.graph.length; i++) {
+            if (this.graph[i][i] > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+     public boolean isComplete(){
+        int numCount = 0;
+
+        if (this.isSimple() == true) {
+            for (int i = 0; i < this.graph.length; i++) {
+                int completeEdge = 0;
+                for (int j = 0; j < this.graph.length; j++) {
+                    if (this.graph[i][j] > 0 && this.graph[j][i] > 0) {
+                        completeEdge++;
+                    }
+                }
+                if (completeEdge / 2 == this.vertex - 1) {
+                    numCount++;
+                }   
+            }
+
+            if (numCount == (this.vertex - 1)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 
