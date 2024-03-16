@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) { 
         Scanner scan = new Scanner(System.in);
 
-        Graph grafo = new Graph(2, 1);
+        Graph grafo = new Graph(4, 6);
 
         int option;
 

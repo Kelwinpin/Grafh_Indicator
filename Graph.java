@@ -119,26 +119,10 @@ public class Graph {
     }
 
      public boolean isComplete(){
-        int numCount = 0;
+        int n = (this.vertex*(this.vertex - 1) / 2);
 
-        if (this.isSimple() == true) {
-            for (int i = 0; i < this.graph.length; i++) {
-                int completeEdge = 0;
-                for (int j = 0; j < this.graph.length; j++) {
-                    if (this.graph[i][j] > 0 && this.graph[j][i] > 0) {
-                        completeEdge++;
-                    }
-                }
-                if (completeEdge / 2 == this.vertex - 1) {
-                    numCount++;
-                }   
-            }
-
-            if (numCount == (this.vertex - 1)) {
-                return true;
-            } else {
-                return false;
-            }
+        if (this.isSimple() == true && n == this.edge) {        
+            return true;
         } else {
             return false;
         }
