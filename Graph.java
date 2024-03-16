@@ -60,6 +60,8 @@ public class Graph {
     public void hasLeaningVertex(){
         int leaningVertex = 0;
         int leaningAutoLoopVertex = 0;
+        printGraph();
+        System.out.println("\n");
 
         for (int i = 0; i < graph.length; i++) {
             for (int j = 0; j < graph.length; j++) {
@@ -79,6 +81,33 @@ public class Graph {
             System.out.println("\nO grafo possui "+sumLeaningVertex+" vértices pendentes!");
         } else {
             System.out.println("\nO grafo não possui vértices pendentes!");
+        }
+    }
+
+    public void hasIsolateVertex(){
+        int isolateVertex = 0;
+        printGraph();
+        System.out.println("\n");
+
+        for (int i = 0; i < this.graph.length; i++) {
+            int countUnlinks = 0;
+
+            for (int j = 0; j < this.graph.length; j++) {
+                if(this.graph[i][j] == 0) {
+                    countUnlinks++;
+                }
+            }
+
+            if (countUnlinks == this.vertex) {
+                System.out.print("["+(i + 1)+"] ");
+                isolateVertex++;
+            }
+        }
+
+        if (isolateVertex > 0) {
+            System.out.println("\nO grafo possui "+isolateVertex+" vértices isolados!");
+        } else {
+            System.out.println("\nO grafo não possui vértices isolados!");
         }
     }
 

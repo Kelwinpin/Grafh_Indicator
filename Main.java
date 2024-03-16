@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) { 
         Scanner scan = new Scanner(System.in);
 
-        Graph grafo = new Graph(5, 10);
+        Graph grafo = new Graph(5, 6);
 
         int option;
 
@@ -12,7 +12,7 @@ public class Main {
 
         while (option != 0) {
 
-            System.out.println("1 --> Exibir grafo\n2 --> Quantidade de vértices pendentes\n0 --> Sair");
+            System.out.println("1 --> Exibir grafo\n2 --> Quantidade de vértices pendentes\n3 --> Quantidade de vértices isoladis\n0 --> Sair");
             option = scan.nextInt(); 
 
             switch (option) {
@@ -27,6 +27,11 @@ public class Main {
                 case 2:
                     System.out.print("\n");
                     grafo.hasLeaningVertex();
+                    System.out.print("\n");
+                    break;
+                case 3:
+                    System.out.print("\n");
+                    grafo.hasIsolateVertex();
                     System.out.print("\n");
                     break;
                 default:
