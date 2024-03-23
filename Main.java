@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) { 
         Scanner scan = new Scanner(System.in);
 
-        Graph grafo = new Graph(4, 6);
+        Graph grafo = new Graph(4, 4);
 
         int option;
 
@@ -17,7 +17,9 @@ public class Main {
             "2 --> Quantidade de vértices pendentes\n"+
             "3 --> Quantidade de vértices isolados\n"+
             "4 --> É simples\n"+
-            "5 --> É composto\n" + 
+            "5 --> É completo\n"+ 
+            "6 --> É bipartido\n"+
+            "7 --> É conexo\n"+
             "0 --> Sair"
             );
 
@@ -39,7 +41,11 @@ public class Main {
                     break;
                 case 3:
                     System.out.print("\n");
-                    grafo.hasIsolateVertex();
+                    if (grafo.hasIsolateVertex()) {
+                        System.out.println("\nO grafo possui vértice(s) isolados!");
+                    } else {
+                        System.out.println("\nO grafo não possui vértices isolados!");
+                    }
                     System.out.print("\n");
                     break;
                 case 4:
@@ -59,6 +65,23 @@ public class Main {
                         System.out.println("O grafo não é completo !");        
                     }
                     System.out.print("\n");
+                    break;
+                case 6:
+                    System.out.print("\n");
+                    if (grafo.isBipartite() == true) {
+                        System.out.println("\nO grafo é bipartido !"); 
+                    } else {
+                        System.out.println("\nO grafo não é bipartido !");        
+                    }
+                    System.out.print("\n");
+                    break;
+                case 7:
+                    System.out.println("\n");
+                    if (grafo.isConnected()) {
+                        System.out.println("\nO grafo é conexo !");
+                    } else {
+                        System.out.println("\nO grafo não é conexo !");
+                    }
                     break;
                 default:
                     System.out.println("\nOpção não existente!\n");
