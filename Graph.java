@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class Graph {
     private int vertex;
@@ -200,7 +203,7 @@ public class Graph {
                     int v3 = j + 1;
                     v[1] = v3;
 
-                    if(isPath(v)){
+                    if(hasConnection(v)){
                         countConnections++;
                     }
                 }  
@@ -214,7 +217,7 @@ public class Graph {
         }
     }
 
-    public boolean isPath (int v[]) {
+    public boolean hasConnection (int v[]) {
         int step = 0;       
         if (this.graph[v[0]][v[1]] > 0) {
             step++;
@@ -225,5 +228,66 @@ public class Graph {
         } else {
             return false;
         }
+    }
+
+    public boolean isIsomorphic(Graph graphB) {
+        ArrayList<Integer> degree = new ArrayList<>();
+        Set<Integer> degreeSet = new HashSet<>();
+        Set<Integer> degreeGraphBSet = new HashSet<>();
+
+
+        if (this.vertex == graphB.vertex && this.edge == graphB.edge) {
+            for (int i = 0; i < graph.length; i++) {
+                for (int j = 0; j < graph.length; j++) {
+                    if(graph[i][j] != 0){
+                        degreeSet.add(graph[i][j]);
+                        degree.add(graph[i][j]);
+                    }
+                }
+            }
+            for (int i = 0; i < graph.length; i++) {
+                for (int j = 0; j < graph.length; j++) {
+                    if(graphB.graph[i][j] != 0){
+                        degreeGraphBSet.add(graphB.graph[i][j]);
+                        degree.add(graphB.graph[i][j]);
+                    }
+                }
+            }
+
+            this.printGraph();
+            System.out.print("\n");
+            graphB.printGraph();
+            System.out.print("\n");
+
+            System.out.println("Graus no grafo A:" + degreeSet);
+            System.out.print("\n");
+            System.out.println("Graus no grafo B:" + degreeGraphBSet);
+            System.out.print("\n");
+
+            if (!degreeSet.equals(degreeGraphBSet)) {
+                return false;
+            }
+
+            for (int i = 1; i < 5; i++) {
+              System.out.println(i+" - "+countElement(degree, i)); 
+               if (countElement(degree, i) % 2 != 0) {
+                return false;
+               } 
+            }
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static int countElement(ArrayList<Integer> array, int element) {
+        int count = 0;
+        for (int i = 0; i < array.size(); i++) {
+            if (array.get(i) == element) {
+                count++;
+            }
+        }
+        return count;
     }
 };

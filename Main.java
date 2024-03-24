@@ -20,6 +20,7 @@ public class Main {
             "5 --> É completo\n"+ 
             "6 --> É bipartido\n"+
             "7 --> É conexo\n"+
+            "8 --> É isomorfo\n"+
             "0 --> Sair"
             );
 
@@ -81,6 +82,15 @@ public class Main {
                         System.out.println("\nO grafo é conexo !");
                     } else {
                         System.out.println("\nO grafo não é conexo !");
+                    }
+                    break;
+                 case 8:
+                    System.out.println("\n");
+                    Graph graphB = new Graph(4, 4);
+                    if (grafo.isIsomorphic(graphB)) {
+                        System.out.println("\nO grafo é isomorfo !");
+                    } else {
+                        System.out.println("\nO grafo não é isomorfo !");
                     }
                     break;
                 default:
