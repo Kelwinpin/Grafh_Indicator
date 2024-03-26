@@ -227,7 +227,9 @@ public class Graph {
     }
 
     public boolean isIsomorphic(Graph graphB) {
-        ArrayList<Integer> degree = new ArrayList<>();
+        ArrayList<Integer> degreesGraph = new ArrayList<>();
+        ArrayList<Integer> degreesGraphB = new ArrayList<>();
+
         Set<Integer> degreeSet = new HashSet<>();
         Set<Integer> degreeGraphBSet = new HashSet<>();
 
@@ -237,15 +239,13 @@ public class Graph {
                 for (int j = 0; j < graph.length; j++) {
                     if(graph[i][j] != 0){
                         degreeSet.add(graph[i][j]);
-                        degree.add(graph[i][j]);
+                        degreesGraph.add(graph[i][j]);
+                        degreeGraphBSet.add(graphB.graph[i][j]);
+                        degreesGraphB.add(graph[i][j]);
                     }
-                }
-            }
-            for (int i = 0; i < graph.length; i++) {
-                for (int j = 0; j < graph.length; j++) {
                     if(graphB.graph[i][j] != 0){
                         degreeGraphBSet.add(graphB.graph[i][j]);
-                        degree.add(graphB.graph[i][j]);
+                        degreesGraphB.add(graph[i][j]);
                     }
                 }
             }
@@ -265,8 +265,10 @@ public class Graph {
             }
 
             for (int i = 1; i < 5; i++) {
-              System.out.println(i+" - "+countElement(degree, i)); 
-               if (countElement(degree, i) % 2 != 0) {
+              System.out.println(i+" - "+countElement(degreesGraph, i) + "\n"); 
+                System.out.println(i+" - "+countElement(degreesGraphB, i)); 
+
+               if (countElement(degreesGraph, i) != countElement(degreesGraphB, i)) {
                 return false;
                } 
             }
