@@ -132,52 +132,48 @@ public class Graph {
     }
 
     public boolean isBipartite(){
-        int par[] = new int[this.vertex];
-        int impar[] = new int[this.vertex];
-        int indexPar = 0;
-        int indexImpar = 0;
+        ArrayList<Integer> par = new ArrayList<>();
+        ArrayList<Integer> impar = new ArrayList<>();
 
         for (int i = 0; i < this.vertex; i++) {
             if ((i + 1) % 2 == 0) {
-                par[indexPar] = i;
-                indexPar++;
+                par.add(i);
             } else {
-                impar[indexImpar] = i;
-                indexImpar++;
+               impar.add(i);
             }
         };
         System.out.println("Impar");
-        for (int i = 0; i <= impar.length - 1; i++) {
-            System.out.print((impar[i] + 1) + " ");
+        for (int i = 0; i <= impar.size() - 1; i++) {
+            System.out.print((impar.get(i) + 1) + " ");
         }
 
         System.out.println("\nPar");
-        for (int i = 0; i <= par.length - 1; i++) {
-            System.out.print((par[i] + 1) + " ");
+        for (int i = 0; i <= par.size() - 1; i++) {
+            System.out.print((par.get(i) + 1) + " ");
         }
-        if (par.length > 0 && impar.length > 0) {
-            for (int i = 0; i < par.length; i++) {
-                for (int j = 0; j < par.length; j++) {
-                    if (this.graph[par[i]][par[j]] > 0) {
+        if (par.size() > 0 && impar.size() > 0) {
+            for (int i = 0; i < par.size(); i++) {
+                for (int j = 0; j < par.size(); j++) {
+                    if (this.graph[par.get(i)][par.get(i)] > 0) {
                         return false;
                     }
                 }
-                for (int j = 0; j < impar.length; j++) {
-                    if (this.graph[par[i]][impar[j]] == 0) {
+                for (int j = 0; j < impar.size(); j++) {
+                    if (this.graph[par.get(i)][impar.get(j)] == 0) {
                         return false;
                     }
                 }
             }
 
-            for (int i = 0; i < impar.length; i++) {
-                for (int j = 0; j < impar.length; j++) {
-                    if (this.graph[impar[i]][impar[j]] > 0) {
+            for (int i = 0; i < impar.size(); i++) {
+                for (int j = 0; j < impar.size(); j++) {
+                    if (this.graph[impar.get(i)][impar.get(j)] > 0) {
                         return false;
                     }
                 }
 
-                for (int j = 0; j < par.length; j++) {
-                    if (this.graph[impar[i]][par[j]] == 0) {
+                for (int j = 0; j < par.size(); j++) {
+                    if (this.graph[impar.get(i)][par.get(j)] == 0) {
                         return false;
                     }
                 }
