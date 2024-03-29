@@ -191,8 +191,8 @@ public class Graph {
         if(hasIsolateVertex()){                        
             return false;
         } else {
-            Vertex v3 = new Vertex(this.vertex, this.graph);
-            return true;
+            Vertex v3 = new Vertex(this.graph);
+            return v3.isConnected();
         }
     }
 
