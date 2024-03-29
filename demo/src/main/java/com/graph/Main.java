@@ -1,10 +1,13 @@
+package com.graph;
+
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) { 
         Scanner scan = new Scanner(System.in);
 
-        Graph grafo = new Graph(4, 4);
+        Graph grafo = new Graph(4, 12);
 
         int option;
 
@@ -86,7 +89,7 @@ public class Main {
                     break;
                  case 8:
                     System.out.println("\n");
-                    Graph graphB = new Graph(4, 4);
+                    Graph graphB = new Graph(4, 2);
                     if (grafo.isIsomorphic(graphB)) {
                         System.out.println("\nO grafo é isomorfo !");
                     } else {

@@ -1,3 +1,5 @@
+package com.graph;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -189,42 +191,12 @@ public class Graph {
         if(hasIsolateVertex()){                        
             return false;
         } else {
-            int v[]= new int[2];
-            int countConnections = 0;
-
-            for (int i = 0; i < this.vertex - 1; i++) {
-                int v2 = i;                    
-                v[0] = v2;
-                for (int j = 0; j < this.vertex - 1; j++) {
-                    int v3 = j + 1;
-                    v[1] = v3;
-
-                    if(hasConnection(v)){
-                        countConnections++;
-                    }
-                }  
-            }
-
-            if (countConnections >= this.vertex - 1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public boolean hasConnection (int v[]) {
-        int step = 0;       
-        if (this.graph[v[0]][v[1]] > 0) {
-            step++;
-        }
-        
-        if (step == 1) { 
+            Vertex v3 = new Vertex(this.vertex, this.graph);
             return true;
-        } else {
-            return false;
         }
     }
+
+ 
 
     public boolean isIsomorphic(Graph graphB) {
         ArrayList<Integer> degreesGraph = new ArrayList<>();
@@ -240,8 +212,6 @@ public class Graph {
                     if(graph[i][j] != 0){
                         degreeSet.add(graph[i][j]);
                         degreesGraph.add(graph[i][j]);
-                        degreeGraphBSet.add(graphB.graph[i][j]);
-                        degreesGraphB.add(graph[i][j]);
                     }
                     if(graphB.graph[i][j] != 0){
                         degreeGraphBSet.add(graphB.graph[i][j]);
