@@ -1,6 +1,7 @@
 package com.graph;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -24,6 +25,7 @@ public class Main {
             "6 --> É bipartido\n"+
             "7 --> É conexo\n"+
             "8 --> É isomorfo\n"+
+            "9 --> O que o grafo eh?\n"+
             "0 --> Sair"
             );
 
@@ -95,6 +97,26 @@ public class Main {
                     } else {
                         System.out.println("\nO grafo não é isomorfo !");
                     }
+                    break;
+                case 9:
+                    Scanner scanNum = new Scanner(System.in);
+                    ArrayList<Integer> selectedVertex =  new ArrayList<Integer>();
+                    System.out.println("Selecione alguns vértices do grafo:");
+                    grafo.printGraph();
+
+                    for (int index = 0; index < grafo.getVertex();){
+                        int sequence = scanNum.nextInt(); 
+                        if (sequence > grafo.getVertex()) {
+                            System.out.println("Vértice inexistente!");
+                        } else {
+                            selectedVertex.add(sequence);
+                            System.out.println(selectedVertex);
+                            index++;
+                        }
+                    };
+
+                    System.out.println(grafo.whatItForms(selectedVertex));
+
                     break;
                 default:
                     System.out.println("\nOpção não existente!\n");

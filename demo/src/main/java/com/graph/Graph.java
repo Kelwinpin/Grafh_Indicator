@@ -191,7 +191,7 @@ public class Graph {
         if(hasIsolateVertex()){                        
             return false;
         } else {
-            Vertex v3 = new Vertex(this.graph);
+            Analyzer v3 = new Analyzer(this.graph);
             return v3.isConnected();
         }
     }
@@ -247,6 +247,11 @@ public class Graph {
         } else {
             return false;
         }
+    }
+
+    public String whatItForms(ArrayList<Integer> vertexs) {
+        Analyzer vertex = new Analyzer(this.graph); 
+        return vertex.analyzeVertices(vertexs);
     }
 
     public static int countElement(ArrayList<Integer> array, int element) {
