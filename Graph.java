@@ -1,5 +1,3 @@
-package com.graph;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,23 +9,15 @@ import java.util.Stack;
 public class Graph {
     private int vertex;
     private int edge;
-    private ArrayList<ArrayList<Integer>> graph;
+    private int[][] graph;
     private Random random = new Random();
 
     public Graph(int vertex, int edge) {
         this.vertex = vertex;
         this.edge = edge;
-        this.graph = new ArrayList<>(vertex);
-           for (int i = 0; i < vertex; i++) {
-            ArrayList<Integer> row = new ArrayList<>(vertex);
-            for (int j = 0; j < vertex; j++) {
-                row.add(0);
-            }
-            graph.add(row);
-        }
+        this.graph = new int[vertex][vertex];
         initializeGraph();
     }
-
 
     public int getVertex() {
         return vertex;
@@ -49,8 +39,8 @@ public class Graph {
                 int weight = random.nextInt(10);
 
                 if (weight != 0) {
-                    graph.get(i).set(j, 1);
-                    graph.get(j).set(i, 1);
+                    graph[i][j] = 1;
+                    graph[j][i] = 1;
                     totalEdge--;
                 }
             }
@@ -58,10 +48,10 @@ public class Graph {
     }
 
     public void printGraph() {
-        for (int i = 0; i < graph.size(); i++) {
+        for (int i = 0; i < graph.length; i++) {
             System.out.print("V" + (i + 1) + " ");
-            for (int j = 0; j < graph.get(i).size(); j++) {
-                System.out.print(graph.get(i).get(j) + " ");
+            for (int j = 0; j < graph[i].length; j++) {
+                System.out.print(graph[i][j] + " ");
             }
             System.out.print("\n");
         }
@@ -70,26 +60,27 @@ public class Graph {
     public void hasLeaningVertex() {
         ArrayList<Integer> leaningVertex = new ArrayList<Integer>();
 
-         for (int i = 0; i < graph.size(); i++) {
+        for (int i = 0; i < graph.length; i++) {
             int countEdge = 0;
-            for (int j = 0; j < graph.get(i).size(); j++) {
-                if (graph.get(i).get(j) > 0) {
+            for (int j = 0; j < graph[i].length; j++) {
+                if (graph[i][j] > 0) {
                     countEdge++;
                 }
             }
             if (countEdge == 1) {
-                leaningVertex.add(i);
+                leaningVertex.add(i + 1);
             }
         }
 
-        System.out.println(leaningVertex+", o grafo possui " + leaningVertex.size() + " v pendente(s)");
+        System.out.println(leaningVertex + ", o grafo possui " + leaningVertex.size() + " v pendente(s)");
     }
+
     public boolean hasIsolateVertex() {
-        for (int i = 0; i < graph.size(); i++) {
+        for (int i = 0; i < graph.length; i++) {
             int countUnlinks = 0;
 
-            for (int j = 0; j < graph.get(i).size(); j++) {
-                if (graph.get(i).get(j) == 0) {
+            for (int j = 0; j < graph[i].length; j++) {
+                if (graph[i][j] == 0) {
                     countUnlinks++;
                 }
             }
@@ -101,19 +92,20 @@ public class Graph {
         }
         return false;
     }
-    public ArrayList<Integer> calcDegree() {
-        ArrayList<Integer> degree = new ArrayList<Integer>();
-        for (int i = 0; i < graph.size(); i++) {
-            int grau = 0;
-            for (int j = 0; j < graph.get(i).size(); j++) {
-                if (graph.get(i).get(j) > 0) {
-                    grau++;
+
+    public int[] calcDegree() {
+        int[] degree = new int[vertex];
+        for (int i = 0; i < graph.length; i++) {
+            int e = 0;
+            for (int j = 0; j < graph[i].length; j++) {
+                if (graph[i][j] > 0) {
+                    e++;
                 }
             }
-            degree.add(grau);
+            degree[i] = e;
         }
-        for (int i = 0; i <  graph.size(); i++) {
-            System.out.println("V: [" + i + "] | Grau - " + degree.get(i));
+        for (int i = 0; i < degree.length; i++) {
+            System.out.println("V: [" + (i + 1) + "] | Grau - " + degree[i]);
         }
 
         return degree;
@@ -121,8 +113,8 @@ public class Graph {
     }
 
     public boolean isSimple() {
-        for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).get(i) > 0) {
+        for (int i = 0; i < graph.length; i++) {
+            if (graph[i][i] > 0) {
                 return false;
             }
         }
@@ -137,36 +129,36 @@ public class Graph {
     public boolean isBipartite() {
         int[] colors = new int[vertex];
         for (int i = 0; i < vertex; i++) {
-            colors[i] = -1; 
+            colors[i] = -1;
         }
 
         for (int i = 0; i < vertex; i++) {
-            if (colors[i] == -1) { 
+            if (colors[i] == -1) {
                 colors[i] = 0;
                 Queue<Integer> queue = new LinkedList<>();
-                queue.offer(i); 
+                queue.offer(i);
 
                 while (!queue.isEmpty()) {
                     int current = queue.poll();
                     for (int j = 0; j < vertex; j++) {
-                        if (graph.get(current).get(j) > 0) { 
-                            if (colors[j] == -1) { 
-                                colors[j] = 1 - colors[current]; 
+                        if (graph[current][j] > 0) {
+                            if (colors[j] == -1) {
+                                colors[j] = 1 - colors[current];
                                 queue.offer(j);
-                            } else if (colors[j] == colors[current]) { 
-                                return false; 
+                            } else if (colors[j] == colors[current]) {
+                                return false;
                             }
                         }
                     }
                 }
             }
         }
-        return true; 
+        return true;
     }
 
     public boolean isConnected() {
-        boolean[] checked = new boolean[graph.size()]; 
-        Stack<Integer> stack = new Stack<>(); 
+        boolean[] checked = new boolean[graph.length];
+        Stack<Integer> stack = new Stack<>();
 
         stack.push(0);
         checked[0] = true;
@@ -174,8 +166,8 @@ public class Graph {
         while (!stack.isEmpty()) {
             int i = stack.pop();
 
-            for (int n = 0; n < graph.get(i).size(); n++) {
-                if (graph.get(i).get(n) > 0 && !checked[n]) {
+            for (int n = 0; n < graph[i].length; n++) {
+                if (graph[i][n] > 0 && !checked[n]) {
                     stack.push(n);
                     checked[n] = true;
                 }
@@ -188,23 +180,30 @@ public class Graph {
             }
         }
 
-        return true; 
+        return true;
     }
+
     public boolean areIsomorphic(Graph graphB) {
         if (this.getVertex() != graphB.getVertex() || this.getEdge() != graphB.getEdge()) {
-            System.out.println("Quantidade de vertices no grafo 1: " + this.getVertex() + "Quantidade de vertices no grafo 2: " + graphB.getVertex());
-            System.out.println("Quantidade de arestas no grafo 1: " + this.getVertex() + "Quantidade de arestas no grafo 2: " + graphB.getVertex());
+            System.out.println("Quantidade de vertices no grafo 1: " + this.getVertex() + " Quantidade de vertices no grafo 2: " + graphB.getVertex());
+            System.out.println("Quantidade de arestas no grafo 1: " + this.getEdge() + " Quantidade de arestas no grafo 2: " + graphB.getEdge());
 
             return false;
         }
 
         System.out.print("Graus grafo 1:\n");
-        ArrayList<Integer> grausGrafoA = calcDegree();
+        int[] grausGrafoA = calcDegree();
         System.out.print("Graus grafo 2:\n");
-        ArrayList<Integer> grausGrafoB = graphB.calcDegree();
+        int[] grausGrafoB = graphB.calcDegree();
 
-        Set<Integer> grausSetA = new HashSet<>(grausGrafoA);
-        Set<Integer> grausSetB = new HashSet<>(grausGrafoB);
+        Set<Integer> grausSetA = new HashSet<>();
+        Set<Integer> grausSetB = new HashSet<>();
+        for (int grau : grausGrafoA) {
+            grausSetA.add(grau);
+        }
+        for (int grau : grausGrafoB) {
+            grausSetB.add(grau);
+        }
         if (!grausSetA.equals(grausSetB)) {
             return false;
         }
@@ -212,28 +211,28 @@ public class Graph {
         return true;
     }
 
-     public String type(ArrayList<Integer> selectedVertexs) {
-        int nextVertex = selectedVertexs.size();
+    public String type(int[] selectedVertexs) {
+        int nextVertex = selectedVertexs.length;
         System.out.println(selectedVertexs);
-        if (selectedVertexs.get(0).equals(selectedVertexs.get(nextVertex - 1))) {
+        if (selectedVertexs[0] == selectedVertexs[nextVertex - 1]) {
             boolean distintVertex = true;
             for (int i = 0; i < nextVertex - 1; i++) {
-                if (selectedVertexs.get(i).equals(selectedVertexs.get(i + 1))) {
+                if (selectedVertexs[i] == selectedVertexs[i + 1]) {
                     distintVertex = false;
                     break;
                 }
             }
             if (distintVertex) {
                 boolean edgeDistint = true;
-                boolean[] checkedEdge = new boolean[graph.size()];
+                boolean[] checkedEdge = new boolean[graph.length];
                 for (int i = 0; i < nextVertex - 1; i++) {
-                    int origin = selectedVertexs.get(i);
-                    int destiny = selectedVertexs.get(i + 1);
-                    if (graph.get(origin).get(destiny) == 0 || checkedEdge[graph.get(origin).get(destiny)]) {
+                    int origin = selectedVertexs[i];
+                    int destiny = selectedVertexs[i + 1];
+                    if (graph[origin][destiny] == 0 || checkedEdge[graph[origin][destiny]]) {
                         edgeDistint = false;
                         break;
                     }
-                    checkedEdge[graph.get(origin).get(destiny)] = true;
+                    checkedEdge[graph[origin][destiny]] = true;
                 }
                 if (edgeDistint) {
                     return "circuito";
@@ -245,9 +244,9 @@ public class Graph {
 
         boolean walk = true;
         for (int i = 0; i < nextVertex - 1; i++) {
-            int origin = selectedVertexs.get(i);
-            int destiny = selectedVertexs.get(i + 1);
-            if (graph.get(origin).get(destiny) == 0) {
+            int origin = selectedVertexs[i];
+            int destiny = selectedVertexs[i + 1];
+            if (graph[origin][destiny] == 0) {
                 walk = false;
                 break;
             }
@@ -258,5 +257,4 @@ public class Graph {
 
         return "nenhum";
     }
-
 }

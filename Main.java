@@ -1,5 +1,3 @@
-package com.graph;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,7 +5,7 @@ import java.util.Scanner;
 public class Main {
 public static void main(String[] args){
     Scanner scan = new Scanner(System.in);
-    Reader reader = new Reader("/home/kelwin/Portfolio/University/Graphs/Graph_Indicator/demo/src/main/java/com/graph/graph.text");
+    Reader reader = new Reader("/home/kelwin/Portfolio/University/Graphs/Graph_Indicator/graph.text");
     List<int[]> graphs = reader.readGraphs();
     
     int option;
@@ -25,6 +23,8 @@ public static void main(String[] args){
         "8 --> É conexo\n"+
         "9 --> É isomorfo\n"+
         "10 --> O grafo é passeio, caminho, trajeto ou circuito?\n"+
+        "11 --> Quantidade de vértices\n"+
+        "12 --> Quantidade de arestas\n"+
         "0 --> Sair"
         );
 
@@ -32,7 +32,7 @@ public static void main(String[] args){
 
        
 
-        Graph G = new Graph(graphs.get(1)[0], graphs.get(1)[1]);
+        Graph G = new Graph(graphs.get(0)[0], graphs.get(0)[1]);
 
         switch (option) {
                 case 0:
@@ -130,9 +130,20 @@ public static void main(String[] args){
                             System.out.println(selectedVertex);
                         break;
                     }
+
+                    System.out.println(G.type(arrayListToIntArray(selectedVertex)));
                 }
-                System.out.println(G.type(selectedVertex));
                 System.out.println("\n");
+            case 11:
+                System.out.println("\n");
+                System.out.println("O Grafo possui "+G.getVertex()+" vertices");
+                System.out.println("\n");
+                break;
+            case 12:
+                System.out.println("\n");
+                System.out.println("O Grafo possui "+G.getEdge()+" arestas");
+                System.out.println("\n");
+                break;
             default:
                 System.out.println("\nOpção não existente!\n");
                 break;
@@ -141,4 +152,13 @@ public static void main(String[] args){
       
     scan.close();
 }
+    public static int[] arrayListToIntArray(ArrayList<Integer> arrayList) {
+            int[] intArray = new int[arrayList.size()];
+
+            for (int i = 0; i < arrayList.size(); i++) {
+                intArray[i] = arrayList.get(i);
+            }
+
+            return intArray;
+    }
 }
