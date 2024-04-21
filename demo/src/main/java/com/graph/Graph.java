@@ -2,265 +2,261 @@ package com.graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 
 public class Graph {
     private int vertex;
-    private int edge; 
-    private int[][] graph;
+    private int edge;
+    private ArrayList<ArrayList<Integer>> graph;
     private Random random = new Random();
 
     public Graph(int vertex, int edge) {
         this.vertex = vertex;
         this.edge = edge;
-        this.graph = new int[vertex][vertex];
+        this.graph = new ArrayList<>(vertex);
+           for (int i = 0; i < vertex; i++) {
+            ArrayList<Integer> row = new ArrayList<>(vertex);
+            for (int j = 0; j < vertex; j++) {
+                row.add(0);
+            }
+            graph.add(row);
+        }
         initializeGraph();
+    }
+
+
+    public int getVertex() {
+        return vertex;
     }
 
     public int getEdge() {
         return edge;
     }
 
-    public int getVertex() {
-        return vertex;
-    }
+    private void initializeGraph() {
+        int totalEdge = edge;
 
-    public void initializeGraph(){
-        int totalEdge = this.edge;
-        int maxZero = this.vertex;
+        for (int i = 0; i < vertex; i++) {
+            for (int j = i; j < vertex; j++) {
+                if (totalEdge == 0) {
+                    break;
+                }
 
-        for (int i = 0; i < this.vertex; i++) {
-            for (int j = 0; j < this.vertex; j++) {
-                    if (totalEdge == 0 && maxZero == 0) {
-                        this.graph[i][j] = 0;
-                        this.graph[j][i] = 0;
-                    } else {
-                        if (this.graph[i][j] == 0 && totalEdge != 0) {
-                            this.graph[i][j] = random.nextInt(5);
-                            this.graph[j][i] = this.graph[i][j];
-                            if (this.graph[i][j] > 0) {
-                                totalEdge--;                            
-                            } else {
-                                maxZero--;
-                            }
-                        }
-                    }
-            }                
+                int weight = random.nextInt(10);
+
+                if (weight != 0) {
+                    graph.get(i).set(j, 1);
+                    graph.get(j).set(i, 1);
+                    totalEdge--;
+                }
+            }
         }
     }
 
-    public void printGraph(){
-        for (int i = 0; i < graph.length; i++) {
-            System.out.print("V"+(i + 1)+" ");
-            for (int j = 0; j < graph.length; j++) {
-                System.out.print(this.graph[i][j]+" ");
+    public void printGraph() {
+        for (int i = 0; i < graph.size(); i++) {
+            System.out.print("V" + (i + 1) + " ");
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                System.out.print(graph.get(i).get(j) + " ");
             }
             System.out.print("\n");
         }
     }
 
-    public void hasLeaningVertex(){
-        int leaningVertex = 0;
-        int leaningAutoLoopVertex = 0;
-        printGraph();
-        System.out.println("\n");
+    public void hasLeaningVertex() {
+        ArrayList<Integer> leaningVertex = new ArrayList<Integer>();
 
-        for (int i = 0; i < graph.length; i++) {
-            for (int j = 0; j < graph.length; j++) {
-                if (i == j && this.graph[i][j] == 1) {
-                  System.out.print("["+i+","+j+"] ");
-                  leaningAutoLoopVertex++;  
-                } else if (this.graph[i][j] == 1) {
-                    System.out.print("["+i+","+j+"] ");
-                    leaningVertex++;
+         for (int i = 0; i < graph.size(); i++) {
+            int countEdge = 0;
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                if (graph.get(i).get(j) > 0) {
+                    countEdge++;
                 }
+            }
+            if (countEdge == 1) {
+                leaningVertex.add(i);
             }
         }
 
-        int sumLeaningVertex = leaningAutoLoopVertex + (leaningVertex / 2);
-
-        if (sumLeaningVertex > 0) {
-            System.out.println("\nO grafo possui "+sumLeaningVertex+" vértices pendentes!");
-        } else {
-            System.out.println("\nO grafo não possui vértices pendentes!");
-        }
+        System.out.println(leaningVertex+", o grafo possui " + leaningVertex.size() + " v pendente(s)");
     }
-
-    public boolean hasIsolateVertex(){
-        int isolateVertex = 0;
-        printGraph();
-        System.out.println("\n");
-
-        for (int i = 0; i < this.graph.length; i++) {
+    public boolean hasIsolateVertex() {
+        for (int i = 0; i < graph.size(); i++) {
             int countUnlinks = 0;
 
-            for (int j = 0; j < this.graph.length; j++) {
-                if(this.graph[i][j] == 0) {
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                if (graph.get(i).get(j) == 0) {
                     countUnlinks++;
                 }
             }
 
-            if (countUnlinks == this.vertex) {
-                System.out.print("["+(i + 1)+"] ");
-                isolateVertex++;
+            if (countUnlinks == vertex) {
+                System.out.print("[" + (i + 1) + "] ");
+                return true;
             }
         }
-
-        if (isolateVertex > 0) {
-            return true;
-        } else {
-            return false;
+        return false;
+    }
+    public ArrayList<Integer> calcDegree() {
+        ArrayList<Integer> degree = new ArrayList<Integer>();
+        for (int i = 0; i < graph.size(); i++) {
+            int grau = 0;
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                if (graph.get(i).get(j) > 0) {
+                    grau++;
+                }
+            }
+            degree.add(grau);
         }
+        for (int i = 0; i <  graph.size(); i++) {
+            System.out.println("V: [" + i + "] | Grau - " + degree.get(i));
+        }
+
+        return degree;
+
     }
 
-    public boolean isSimple(){
-         for (int i = 0; i < this.graph.length; i++) {
-            if (this.graph[i][i] > 0) {
+    public boolean isSimple() {
+        for (int i = 0; i < graph.size(); i++) {
+            if (graph.get(i).get(i) > 0) {
                 return false;
             }
         }
         return true;
     }
 
-     public boolean isComplete(){
-        int n = (this.vertex*(this.vertex - 1) / 2);
-
-        if (this.isSimple() == true && n == this.edge) {        
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isComplete() {
+        int maxEdges = (vertex * (vertex - 1)) / 2;
+        return isSimple() && edge == maxEdges;
     }
 
-    public boolean isBipartite(){
-        ArrayList<Integer> par = new ArrayList<>();
-        ArrayList<Integer> impar = new ArrayList<>();
-
-        for (int i = 0; i < this.vertex; i++) {
-            if ((i + 1) % 2 == 0) {
-                par.add(i);
-            } else {
-               impar.add(i);
-            }
-        };
-        System.out.println("Impar");
-        for (int i = 0; i <= impar.size() - 1; i++) {
-            System.out.print((impar.get(i) + 1) + " ");
+    public boolean isBipartite() {
+        int[] colors = new int[vertex];
+        for (int i = 0; i < vertex; i++) {
+            colors[i] = -1; 
         }
 
-        System.out.println("\nPar");
-        for (int i = 0; i <= par.size() - 1; i++) {
-            System.out.print((par.get(i) + 1) + " ");
-        }
-        if (par.size() > 0 && impar.size() > 0) {
-            for (int i = 0; i < par.size(); i++) {
-                for (int j = 0; j < par.size(); j++) {
-                    if (this.graph[par.get(i)][par.get(i)] > 0) {
-                        return false;
-                    }
-                }
-                for (int j = 0; j < impar.size(); j++) {
-                    if (this.graph[par.get(i)][impar.get(j)] == 0) {
-                        return false;
+        for (int i = 0; i < vertex; i++) {
+            if (colors[i] == -1) { 
+                colors[i] = 0;
+                Queue<Integer> queue = new LinkedList<>();
+                queue.offer(i); 
+
+                while (!queue.isEmpty()) {
+                    int current = queue.poll();
+                    for (int j = 0; j < vertex; j++) {
+                        if (graph.get(current).get(j) > 0) { 
+                            if (colors[j] == -1) { 
+                                colors[j] = 1 - colors[current]; 
+                                queue.offer(j);
+                            } else if (colors[j] == colors[current]) { 
+                                return false; 
+                            }
+                        }
                     }
                 }
             }
-
-            for (int i = 0; i < impar.size(); i++) {
-                for (int j = 0; j < impar.size(); j++) {
-                    if (this.graph[impar.get(i)][impar.get(j)] > 0) {
-                        return false;
-                    }
-                }
-
-                for (int j = 0; j < par.size(); j++) {
-                    if (this.graph[impar.get(i)][par.get(j)] == 0) {
-                        return false;
-                    }
-                }
-            }
-        
-            return true;
-        } else {
-            return false;
         }
+        return true; 
     }
 
     public boolean isConnected() {
-        if(hasIsolateVertex()){                        
-            return false;
-        } else {
-            Analyzer v3 = new Analyzer(this.graph);
-            return v3.isConnected();
-        }
-    }
+        boolean[] checked = new boolean[graph.size()]; 
+        Stack<Integer> stack = new Stack<>(); 
 
- 
+        stack.push(0);
+        checked[0] = true;
 
-    public boolean isIsomorphic(Graph graphB) {
-        ArrayList<Integer> degreesGraph = new ArrayList<>();
-        ArrayList<Integer> degreesGraphB = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            int i = stack.pop();
 
-        Set<Integer> degreeSet = new HashSet<>();
-        Set<Integer> degreeGraphBSet = new HashSet<>();
-
-
-        if (this.vertex == graphB.vertex && this.edge == graphB.edge) {
-            for (int i = 0; i < graph.length; i++) {
-                for (int j = 0; j < graph.length; j++) {
-                    if(graph[i][j] != 0){
-                        degreeSet.add(graph[i][j]);
-                        degreesGraph.add(graph[i][j]);
-                    }
-                    if(graphB.graph[i][j] != 0){
-                        degreeGraphBSet.add(graphB.graph[i][j]);
-                        degreesGraphB.add(graph[i][j]);
-                    }
+            for (int n = 0; n < graph.get(i).size(); n++) {
+                if (graph.get(i).get(n) > 0 && !checked[n]) {
+                    stack.push(n);
+                    checked[n] = true;
                 }
             }
+        }
 
-            this.printGraph();
-            System.out.print("\n");
-            graphB.printGraph();
-            System.out.print("\n");
-
-            System.out.println("Graus no grafo A:" + degreeSet);
-            System.out.print("\n");
-            System.out.println("Graus no grafo B:" + degreeGraphBSet);
-            System.out.print("\n");
-
-            if (!degreeSet.equals(degreeGraphBSet)) {
+        for (boolean v : checked) {
+            if (!v) {
                 return false;
             }
+        }
 
-            for (int i = 1; i < 5; i++) {
-              System.out.println(i+" - "+countElement(degreesGraph, i) + "\n"); 
-                System.out.println(i+" - "+countElement(degreesGraphB, i)); 
+        return true; 
+    }
+    public boolean areIsomorphic(Graph graphB) {
+        if (this.getVertex() != graphB.getVertex() || this.getEdge() != graphB.getEdge()) {
+            System.out.println("Quantidade de vertices no grafo 1: " + this.getVertex() + "Quantidade de vertices no grafo 2: " + graphB.getVertex());
+            System.out.println("Quantidade de arestas no grafo 1: " + this.getVertex() + "Quantidade de arestas no grafo 2: " + graphB.getVertex());
 
-               if (countElement(degreesGraph, i) != countElement(degreesGraphB, i)) {
-                return false;
-               } 
-            }
-            
-            return true;
-        } else {
             return false;
         }
+
+        System.out.print("Graus grafo 1:\n");
+        ArrayList<Integer> grausGrafoA = calcDegree();
+        System.out.print("Graus grafo 2:\n");
+        ArrayList<Integer> grausGrafoB = graphB.calcDegree();
+
+        Set<Integer> grausSetA = new HashSet<>(grausGrafoA);
+        Set<Integer> grausSetB = new HashSet<>(grausGrafoB);
+        if (!grausSetA.equals(grausSetB)) {
+            return false;
+        }
+
+        return true;
     }
 
-    public String whatItForms(ArrayList<Integer> vertexs) {
-        Analyzer vertex = new Analyzer(this.graph); 
-        return vertex.analyzeVertices(vertexs);
-    }
-
-    public static int countElement(ArrayList<Integer> array, int element) {
-        int count = 0;
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i) == element) {
-                count++;
+     public String type(ArrayList<Integer> selectedVertexs) {
+        int nextVertex = selectedVertexs.size();
+        System.out.println(selectedVertexs);
+        if (selectedVertexs.get(0).equals(selectedVertexs.get(nextVertex - 1))) {
+            boolean distintVertex = true;
+            for (int i = 0; i < nextVertex - 1; i++) {
+                if (selectedVertexs.get(i).equals(selectedVertexs.get(i + 1))) {
+                    distintVertex = false;
+                    break;
+                }
+            }
+            if (distintVertex) {
+                boolean edgeDistint = true;
+                boolean[] checkedEdge = new boolean[graph.size()];
+                for (int i = 0; i < nextVertex - 1; i++) {
+                    int origin = selectedVertexs.get(i);
+                    int destiny = selectedVertexs.get(i + 1);
+                    if (graph.get(origin).get(destiny) == 0 || checkedEdge[graph.get(origin).get(destiny)]) {
+                        edgeDistint = false;
+                        break;
+                    }
+                    checkedEdge[graph.get(origin).get(destiny)] = true;
+                }
+                if (edgeDistint) {
+                    return "circuito";
+                } else {
+                    return "trajeto";
+                }
             }
         }
-        return count;
+
+        boolean walk = true;
+        for (int i = 0; i < nextVertex - 1; i++) {
+            int origin = selectedVertexs.get(i);
+            int destiny = selectedVertexs.get(i + 1);
+            if (graph.get(origin).get(destiny) == 0) {
+                walk = false;
+                break;
+            }
+        }
+        if (walk) {
+            return "passeio";
+        }
+
+        return "nenhum";
     }
-};
+
+}

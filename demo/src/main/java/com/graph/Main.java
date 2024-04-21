@@ -1,53 +1,56 @@
 package com.graph;
 
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) { 
-        Scanner scan = new Scanner(System.in);
+public static void main(String[] args){
+    Scanner scan = new Scanner(System.in);
+    Reader reader = new Reader("/home/kelwin/Portfolio/University/Graphs/Graph_Indicator/demo/src/main/java/com/graph/graph.text");
+    List<int[]> graphs = reader.readGraphs();
+    
+    int option;
+    option = 1;
+    while (option != 0) {
 
-        Graph grafo = new Graph(5, 10);
+        System.out.println(
+        "1 --> Exibir grafo\n"+
+        "2 --> Quantidade de vértices pendentes\n"+
+        "3 --> Quantidade de vértices isolados\n"+
+        "4 --> Grau de cada vértice\n"+
+        "5 --> É simples\n"+
+        "6 --> É completo\n"+ 
+        "7 --> É bipartido\n"+
+        "8 --> É conexo\n"+
+        "9 --> É isomorfo\n"+
+        "10 --> O grafo é passeio, caminho, trajeto ou circuito?\n"+
+        "0 --> Sair"
+        );
 
-        int option;
+        option = scan.nextInt();
 
-        option = 1;
+       
 
-        while (option != 0) {
+        Graph G = new Graph(graphs.get(1)[0], graphs.get(1)[1]);
 
-            System.out.println(
-            "1 --> Exibir grafo\n"+
-            "2 --> Quantidade de vértices pendentes\n"+
-            "3 --> Quantidade de vértices isolados\n"+
-            "4 --> É simples\n"+
-            "5 --> É completo\n"+ 
-            "6 --> É bipartido\n"+
-            "7 --> É conexo\n"+
-            "8 --> É isomorfo\n"+
-            "9 --> O que o grafo eh?\n"+
-            "0 --> Sair"
-            );
-
-            option = scan.nextInt(); 
-
-            switch (option) {
+        switch (option) {
                 case 0:
                     System.out.println("\nObrigado por usar o sistema!\n");
                     break;
                 case 1:
                     System.out.print("\n");
-                    grafo.printGraph();
+                    G.printGraph();
                     System.out.print("\n");
                     break;
                 case 2:
                     System.out.print("\n");
-                    grafo.hasLeaningVertex();
+                    G.hasLeaningVertex();
                     System.out.print("\n");
                     break;
                 case 3:
                     System.out.print("\n");
-                    if (grafo.hasIsolateVertex()) {
+                    if (G.hasIsolateVertex()) {
                         System.out.println("\nO grafo possui vértice(s) isolados!");
                     } else {
                         System.out.println("\nO grafo não possui vértices isolados!");
@@ -56,74 +59,86 @@ public class Main {
                     break;
                 case 4:
                     System.out.print("\n");
-                    if (grafo.isSimple() == true) {
+                    G.calcDegree();
+                    System.out.print("\n");
+                    break;
+                case 5:
+                    System.out.print("\n");
+                    if (G.isSimple() == true) {
                         System.out.println("O grafo é simples !"); 
                     } else {
                         System.out.println("O grafo não é simples !");        
                     }
                     System.out.print("\n");
                     break;
-                case 5:
+                case 6:
                     System.out.print("\n");
-                    if (grafo.isComplete() == true) {
+                    if (G.isComplete() == true) {
                         System.out.println("O grafo é completo !"); 
                     } else {
                         System.out.println("O grafo não é completo !");        
                     }
                     System.out.print("\n");
                     break;
-                case 6:
+                case 7:
                     System.out.print("\n");
-                    if (grafo.isBipartite() == true) {
+                    if (G.isBipartite() == true) {
                         System.out.println("\nO grafo é bipartido !"); 
                     } else {
                         System.out.println("\nO grafo não é bipartido !");        
                     }
                     System.out.print("\n");
                     break;
-                case 7:
-                    System.out.println("\n");
-                    if (grafo.isConnected()) {
+            case 8:
+                System.out.println("\n");
+                    if (G.isConnected()) {
                         System.out.println("\nO grafo é conexo !");
                     } else {
                         System.out.println("\nO grafo não é conexo !");
-                    }
-                    break;
-                 case 8:
-                    System.out.println("\n");
-                    Graph graphB = new Graph(4, 2);
-                    if (grafo.isIsomorphic(graphB)) {
-                        System.out.println("\nO grafo é isomorfo !");
-                    } else {
-                        System.out.println("\nO grafo não é isomorfo !");
-                    }
-                    break;
-                case 9:
-                    Scanner scanNum = new Scanner(System.in);
-                    ArrayList<Integer> selectedVertex =  new ArrayList<Integer>();
-                    System.out.println("Selecione alguns vértices do grafo:");
-                    grafo.printGraph();
+                    }               
+                break;
+            case 9:
+                System.out.println("\n");
+                Graph graphB = new Graph(4, 6);
+                if (G.areIsomorphic(graphB)) {
+                    System.out.println("\nO grafo é isomorfo !");
+                } else {
+                    System.out.println("\nO grafo não é isomorfo !");
+                }
+                break;
+            case  10:
+                System.out.println("\n");
+                ArrayList<Integer> selectedVertex = new ArrayList<Integer>();
+                int choice = 1;
+                while (choice != 0) {
+                    System.out.println(
+                    "1 --> Adicionar vértice\n"+
+                    "0 --> Sair"
+                    );
 
-                    for (int index = 0; index < grafo.getVertex();){
-                        int sequence = scanNum.nextInt(); 
-                        if (sequence > grafo.getVertex()) {
-                            System.out.println("Vértice inexistente!");
-                        } else {
-                            selectedVertex.add(sequence);
+                    choice = scan.nextInt();
+
+                    switch (choice) {
+                        case 0:
+                            System.out.println("\nSaindo...\n");
+                        break;
+
+                        case 1:
+                            System.out.println("Digite um vértice:");
+                            int value = scan.nextInt();
+                            selectedVertex.add(value);
                             System.out.println(selectedVertex);
-                            index++;
-                        }
-                    };
-
-                    System.out.println(grafo.whatItForms(selectedVertex));
-
-                    break;
-                default:
-                    System.out.println("\nOpção não existente!\n");
-                    break;
-            }
+                        break;
+                    }
+                }
+                System.out.println(G.type(selectedVertex));
+                System.out.println("\n");
+            default:
+                System.out.println("\nOpção não existente!\n");
+                break;
         }
-      
-        scan.close();
     }
+      
+    scan.close();
+}
 }
